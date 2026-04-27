@@ -30,7 +30,8 @@ PROVIDER_PRESETS = {
         "base_url": "https://api.novita.ai/openai",
     },
     "minimax": {
-        "base_url": "https://api.minimaxi.com/v1",
+        "base_url": "https://api.minimax.io/anthropic",
+        "wire_api": "anthropic",
     },
     "volcengine": {
         "base_url": "https://ark.cn-beijing.volces.com/api/v3",

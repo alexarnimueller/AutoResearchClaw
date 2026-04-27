@@ -236,6 +236,14 @@ def _request_with_retry(
             if exc.code == 429:
                 if _cb_on_429():
                     return None  # breaker tripped
+                # On first 429, don't retry S2 — fall through to next backend
+                # immediately so arXiv/OpenAlex can run without waiting.
+                if attempt == 0:
+                    logger.warning(
+                        "S2 rate-limited (429) on first attempt — "
+                        "skipping S2 for this query, trying next backend"
+                    )
+                    return None
                 delay = min(2 ** (attempt + 1), _MAX_WAIT_SEC)
                 jitter = random.uniform(0, delay * 0.3)
                 wait = delay + jitter
