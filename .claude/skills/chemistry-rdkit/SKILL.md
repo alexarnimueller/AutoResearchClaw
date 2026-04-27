@@ -36,20 +36,24 @@ metadata:
 4. Tanimoto similarity: `DataStructs.TanimotoSimilarity(fp1, fp2)`
 5. Use radius=2 (ECFP4 equivalent) as default for most applications
 6. For virtual screening, Tanimoto > 0.7 suggests structural similarity
+7. To filter for unique structures, use `Chem.MolToInchiKey`
 
 ### Substructure Search
 1. SMARTS patterns: `pattern = Chem.MolFromSmarts('[OH]')`
 2. Check match: `mol.HasSubstructMatch(pattern)`
 3. Get all matches: `mol.GetSubstructMatches(pattern)`
-4. Common SMARTS: `[#6](=O)[OH]` (carboxylic acid), `[NH2]` (primary amine)
-5. Filter compound libraries by functional group presence
+5. Common SMARTS: `[#6](=O)[OH]` (carboxylic acid), `[NH2]` (primary amine)
+6. Find maximum common substructure with `mcs = rdFMCS.FindMCS(mols)`
+7. Filter compound libraries by functional group presence
 
 ### Property Calculation Patterns
 1. Batch processing: iterate over SDMolSupplier, skip None entries
 2. Use `Chem.Descriptors.descList` for all available descriptors
 3. For ADMET filtering, calculate Lipinski, Veber, and PAINS filters
-4. Generate 3D coordinates: `AllChem.EmbedMolecule(mol, AllChem.ETKDG())`
-5. Minimize energy: `AllChem.MMFFOptimizeMolecule(mol)`
+4. For general druglikeness, use `Descriptors.qed`, for synthesizability `from SA_Score import sascorer`
+5. For `sascorer`, append the contrib path first: `sys.path.append(os.path.join(os.environ['CONDA_PREFIX'],'share','RDKit','Contrib'))`
+6. Generate 3D coordinates: `AllChem.EmbedMolecule(mol, AllChem.ETKDG())`
+7. Minimize energy: `AllChem.MMFFOptimizeMolecule(mol)`
 
 ### Common Pitfalls
 1. Always sanitize molecules (default behavior) — disable only when needed
